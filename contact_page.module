@@ -1,0 +1,48 @@
+<?php
+
+  function contact_page_menu() {
+    $items['contact'] = array(
+      'title'=>t('Contact'),
+      'page callback' => 'contact_page_display',
+      'access arguments' => array('access content'),
+      'type' => MENU_NORMAL_ITEM,
+      'menu_name' => 'main-menu',
+    );
+    return $items;
+  }
+  function  contact_page_theme($existing, $type, $theme, $path) {
+  return array(
+    'contact_page' => array(
+      'variables' => array('adress' => NULL, 'route_planner' => null ),
+        'template' => '/templates/contact-page'
+    ),
+    'contact_info' => array(
+      'variables' => array('adress' => NULL ),
+        'template' => '/templates/contact-info'
+    ),
+   );
+}
+
+
+  function  contact_page_display(){
+      global $language;
+        $adress = node_load(variable_get('headquarter_nid',11));
+           // @todo make the addresses dinamic
+      $adressen =   views_embed_view('contact', 'block_1');
+        return theme('contact_page', array('adress'=>$adressen, 'route_planner'=>contact_page_anwb_route($adress)));
+    }
+
+  function contact_page_anwb_route($adress){
+      $block = '<div class="anwb-route"><script type="text/javascript">
+                           
+                                  var anwb_tool="adresnv";
+                                  var anwb_tool_type="normal";
+                                  var anwb_tool_tekst="'.$adress->title.', '.$adress->field_filiaal_city['nl'][0]['value'].'";
+                                  var anwb_tool_postcode="'.$adress->field_filiaal_postal_code['nl'][0]['value'].'";
+                                  var anwb_tool_nr="'.$adress->field_filiaal_number['nl'][0]['value'].'";
+                         
+                            </script>
+                            <script type="text/javascript" src="http://www.anwb.nl/verkeer/verkeerstool.js"></script>
+                   </div>';
+       return $block;
+  }

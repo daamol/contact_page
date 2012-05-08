@@ -1,0 +1,8 @@
+; $Id: rdf.info,v 1.3 2009/11/18 04:44:19 webchick Exp $
+name = contact page
+description = functions to generate a contact page
+package = DAMOL_CUSTOM
+version = VERSION
+core = 7.x
+
+
